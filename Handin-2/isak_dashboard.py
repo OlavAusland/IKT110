@@ -100,7 +100,7 @@ def run_auction(base64_content, filename, budget_raw, years_in_future_raw):
         return "No prediction for budget, please increase poor bitch"
     else:
         print(f'Houses Left: {len(auction_data)}')
-    # implemented knapsack
+    # implement knapsack
 
     profitable = []
     houses_to_buy = []

@@ -1,34 +1,40 @@
 import json
 import plotly.express as px
-import requests
-
-
-def read_data():
-    with open('emp.json', 'r') as file:
-        emp_data = json.load(file)
-        return emp_data['employees']
-
-
-def get_population(city):
-    api_url = f'https://api.api-ninjas.com/v1/city?name={city}'
-    response = requests.get(api_url, headers={'X-Api-Key': 'cW6jX4siIIMBhaMY2EF0WA==UqhzsmmuNa9CjsaQ'})
-    data = response.json()
-    return int(data[0]['population'])
-
 
 def main():
-    emp_data = read_data()
+    workplaces = []
+    employees = {}
 
     workplace_data = {}
+    employee_age = {}
+    with open('./emp.json', 'r', encoding='utf-8') as f:
+        employees = json.load(f)
+    identifiers = []
 
-    for employee in emp_data:
-        if employee['Workplace'] in workplace_data:
-            workplace_data[employee['Workplace']] += 1
+    for employee in employees['employees']:
+        if employee['Workplace'] not in workplaces:
+            workplaces.append(employee['Workplace'])
+
+        if employee['Age'] in employee_age:
+            employee_age[employee['Age']] += 1
         else:
-            workplace_data[employee['Workplace']] = 1
+            employee_age[employee['Age']] = 1
 
-    fig = px.bar(x=workplace_data.keys(), y=workplace_data.values(), text_auto=True)
-    fig.write_image('./static/workplace_employees_ratio.png', scale=10)
+    print('Workplace / Number of employees\n')
+    for workplace in workplaces:
+        num_employees = sum(1 for employee in employees["employees"] if employee["Workplace"] == workplace)
+        print(f'{workplace} : {num_employees}')
+        workplace_data[workplace] = num_employees
+
+    print(employee_age)
+    figure = px.bar(x=workplace_data.keys(), y=workplace_data.values(), text_auto=True)
+    figure.show()
+
+    age_fig = px.bar(x=employee_age.keys(), y=employee_age.values(), text_auto=True)
+    age_fig.show()
+
+    figure.write_image('./static/workplace_staff.png', scale=10)
+    age_fig.write_image('./static/staff_age.png', scale=10)
 
 
 if __name__ == '__main__':
