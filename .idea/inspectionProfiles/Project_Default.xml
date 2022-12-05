@@ -5,7 +5,20 @@
       <option name="ignoredErrors">
         <list>
           <option value="N802" />
+<<<<<<< HEAD
+          <option value="N806" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="PyQt5.QtWidgets.triggered.connect" />
+          <option value="PyQt5.QtWidgets.clicked.connect" />
+          <option value="The" />
+=======
           <option value="N803" />
+>>>>>>> b3fab2507e87384cc86f0c9dfc7d38c620a05441
         </list>
       </option>
     </inspection_tool>

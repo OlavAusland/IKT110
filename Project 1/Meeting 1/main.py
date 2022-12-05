@@ -1,7 +1,6 @@
 import json
 import plotly.express as px
 
-
 def main():
     workplaces = []
     employees = {}
@@ -36,6 +35,7 @@ def main():
 
     figure.write_image('./static/workplace_staff.png', scale=10)
     age_fig.write_image('./static/staff_age.png', scale=10)
+
 
 if __name__ == '__main__':
     main()
