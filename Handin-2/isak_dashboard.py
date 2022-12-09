@@ -109,7 +109,7 @@ def run_auction(base64_content, filename, budget_raw, years_in_future_raw):
         predicted = predict_house_value(house, houses=houses, delta_year=years_in_future, model='./new_model.csv')
         house.data['predicted'] = predicted
         diff = predicted - house.data['auction_price']
-        if 0 < diff < 2000000:
+        if 0 < diff < 1750000:
             house.data['profit'] = diff
             profitable.append(house)
 
