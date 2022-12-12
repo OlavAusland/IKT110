@@ -6,6 +6,7 @@ import numpy as np
 import operator
 import math
 
+
 class Hero:
     def __init__(self):
         self.attributes: dict = {}
@@ -15,8 +16,8 @@ class GameResult:
     def __init__(self, player_features: list = ['hero_id']):
         self.player_features = player_features
         self.data = {'players': {'dire': [], 'radiant': []},
-                     'radiant_win': False,
-                     'game_mode': 0,
+                     'radiant_win': bool,
+                     'game_mode': int,
                      'duration': int}
 
 
@@ -143,8 +144,14 @@ def get_most_affected_hero_by_side(data: dict):
     return result
 
 
+def get_heroes() -> list:
+    with open('./heroes.json', 'rb') as file:
+        return json.loads(file.read())
+
+
 def main():
     # extract_data()
+    """
     data = load_data()
     print(f'1. {get_most_played_hero(data)}')
     print(f'2. {get_highest_win_rate_hero(data)}')
@@ -155,7 +162,12 @@ def main():
     print(f'7. Unknown')
     print(f'8. Unknown')
     print(f'9. Unknown')
-
+    print(get_heroes())
+    """
+    x = np.ndarray(shape=(2, 3))
+    x = np.append(x, [[1, 2, 3]], axis=0)
+    x = np.append(x, [[1, 2, 3]], axis=0)
+    print(x)
 
 if __name__ == '__main__':
     main()
