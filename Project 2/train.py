@@ -65,11 +65,11 @@ def train():
     x_train, x_test, y_train, y_test = load_data()
     model = create_model()
     model.fit(x_train, y_train, epochs=EPOCH_SIZE, batch_size=BATCH_SIZE, validation_data=(x_test, y_test))
-    model.save('./models/default.h5')
+    model.save('./models/model.h5')
     print(model.evaluate(x_test, y_test, batch_size=BATCH_SIZE))
 
 
-def predict(model_path: str = './models/default.h5', dire=[18, 39, 29, 101, 14], radiant=[84, 56, 70, 40, 104]):
+def predict(model_path: str = './models/model.h5', dire=[18, 39, 29, 101, 14], radiant=[84, 56, 70, 40, 104]):
     model: Sequential = load_model(model_path)
 
     data = champs_to_input(dire, radiant)
@@ -80,7 +80,7 @@ def predict(model_path: str = './models/default.h5', dire=[18, 39, 29, 101, 14],
 
 
 def main():
-    # train()
+    #train()
 
     non_champion_id = [24, 115, 116, 117, 118, 122, 123, 124, 125, 127]
     enemies = [36, 27, 41, 31, 98]

@@ -17,9 +17,9 @@ class GameResult:
     def __init__(self, player_features: list = ['hero_id']):
         self.player_features = player_features
         self.data = {'players': {'dire': [], 'radiant': []},
-                     'radiant_win': bool,
-                     'game_mode': int,
-                     'duration': int}
+                     'radiant_win': False,
+                     'game_mode': 22,
+                     'duration': -1}
 
 
 def extract_data():
@@ -31,21 +31,21 @@ def extract_data():
 
     games: List[GameResult] = []
     with ZipFile("./dota_games.zip", "r") as z:
-        for filename in tqdm(z.namelist()[1:]):
+        for filename in tqdm(z.namelist()):
             with z.open(filename) as f:
                 try:
                     game_result: GameResult = GameResult()
                     data = json.loads(f.read())['result']
-
-                    for feature in wanted_features:
-                        if feature == 'players':
-                            for i in range(0, len(data[feature])):
-                                for player_feature in game_result.player_features:
-                                    game_result.data[feature]['dire' if i >= 5 else 'radiant'].append(data[feature][i][player_feature])
-                        else:
-                            game_result.data[feature] = data[feature]
-
-                    games.append(game_result)
+                    if data['game_mode'] == 22:
+                        for feature in wanted_features:
+                            if feature == 'players':
+                                for i in range(0, len(data[feature])):
+                                    for player_feature in game_result.player_features:
+                                        game_result.data[feature]['dire' if i >= 5 else 'radiant'].append(data[feature][i][player_feature])
+                            else:
+                                game_result.data[feature] = data[feature]
+                        if 0 not in game_result.data['players']['dire'] and 0 not in game_result.data['players']['radiant']:
+                            games.append(game_result)
                 except Exception as error:
                     print(f'Failed: {error}')
     with open('./data.json', 'w') as file:
@@ -150,8 +150,20 @@ def get_heroes() -> list:
         return json.loads(file.read())
 
 
+def data_cleanup(data: str = './data.json'):
+    with open(data, 'w+') as file:
+        data = json.loads(file.read())
+
+        for i, game in enumerate(data):
+            if 0 in game['players']['radiant'] or 0 in game['players']['dire']:
+                del data[i]
+
+        file.write(data)
+
+
 def main():
     extract_data()
+    # data_cleanup()
     """
     data = load_data()
     print(f'1. {get_most_played_hero(data)}')
@@ -165,6 +177,7 @@ def main():
     print(f'9. Unknown')
     print(get_heroes())
     """
+
 
 if __name__ == '__main__':
     main()
