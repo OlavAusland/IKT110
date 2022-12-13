@@ -5,11 +5,11 @@ import numpy as np
 import json
 import tqdm
 
-INPUT_SHAPE = (136*2,)
+INPUT_SHAPE = (136 * 2,)
 OUTPUT_SHAPE = 2
 
 EPOCH_SIZE = 100
-BATCH_SIZE = 128
+BATCH_SIZE = 10
 
 
 def create_model() -> Sequential:
@@ -69,10 +69,10 @@ def train():
     print(model.evaluate(x_test, y_test, batch_size=BATCH_SIZE))
 
 
-def predict(model_path: str = './models/default.h5'):
+def predict(model_path: str = './models/default.h5', dire=[18, 39, 29, 101, 14], radiant=[84, 56, 70, 40, 104]):
     model: Sequential = load_model(model_path)
 
-    data = champs_to_input([18, 39, 29, 101, 14], [84, 56, 70, 40, 104])
+    data = champs_to_input(dire, radiant)
 
     prediction = model.predict(np.array([data]))
 
@@ -90,7 +90,7 @@ def main():
 
     print(champion_pool)
 
-    predict()
+    predict(dire=np.random.choice(champion_pool, 5), radiant=enemies)
 
 
 if __name__ == '__main__':
