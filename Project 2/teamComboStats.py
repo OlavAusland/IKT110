@@ -67,6 +67,46 @@ def createDuoData(data, duoWrite):
 
     return
 
+def createDuoDataV2(data, write):
+    gameCombination = {}
+    df = pd.read_csv(data, header=None)
+    df = df.values
+    combination1 = None
+    combination2 = None
+    result = None
+    for i in range(5):
+        for j in range(i+1, 5):
+            if combination2 is None:
+                combination1 = df[:, :2] + 130
+                combination2 = df[:, 5:7]
+                result = df[:, 10]
+            else:
+                combination1 = np.vstack((combination1, np.hstack((df[:, i:i+1] + 130, df[:, j:j+1] + 130))))
+                combination2 = np.vstack((combination2, np.hstack((df[:, i+5:i+6], df[:, j+5:j+6]))))
+                result = np.hstack((result, df[:, 10]))
+
+    for i in range(len(combination2)):
+        var = 1 if result[i] == 1 else 0
+        if tuple(combination1[i]) in gameCombination:
+            gameCombination[tuple(combination1[i])][var] = gameCombination[tuple(combination1[i])][var] + 1
+        else:
+            gameCombination.setdefault(tuple(combination1[i]), [0, 0])
+            gameCombination[tuple(combination1[i])][var] = 1
+        var = 1 if result[i] == 0 else 0
+        if tuple(combination2[i]) in gameCombination:
+            gameCombination[tuple(combination2[i])][var] = gameCombination[tuple(combination2[i])][var] + 1
+        else:
+            gameCombination.setdefault(tuple(combination2[i]), [0, 0])
+            gameCombination[tuple(combination2[i])][var] = 1
+
+    with open(write, 'w') as f:
+        f.writelines("1, 2, WinRate, Win, Defeat\n")
+        for key, value in gameCombination.items():
+            f.writelines(f"{key[0]}, {key[1]},{round(100/(value[0]+value[1])*value[0], 2)} ,{value[0]}, {value[1]}\n")
+
+    return
+
+
 
 def duoWinRate(data, winRateWrite):
     duoData = np.full((130, 130), 0.)
@@ -82,6 +122,28 @@ def duoWinRate(data, winRateWrite):
     with open(winRateWrite, 'w', newline='', encoding='UTF8') as csvfile:
         writer = csv.writer(csvfile)
         writer.writerows(duoData)
+    return
+
+def duoWinRateV2(data, winRateWrite):
+    with open(winRateWrite, 'w', newline='', encoding='UTF8') as f:
+        f.writelines("1, 2, Win Rate\n")
+        with open(data, 'r') as input_file:
+            reader = csv.reader(input_file)
+            next(reader)
+            for row, r in enumerate(reader):
+                rowString = ""
+                numbers = 0.
+                number = 0.
+                for colum, field in enumerate(r):
+                    if colum < 2:
+                        rowString += field + ","
+                        continue
+                    numbers += float(field)
+                    if number == 0:
+                        number = float(field)
+                rowString += str(round((100. / numbers) * number, 2)) + "\n"
+                f.writelines(rowString)
+
     return
 
 
@@ -209,24 +271,23 @@ def createTeamData(data, write):
     result = df[:, 10]
 
     for i in range(len(combination1)):
-        var = 1 if result[i] == 0 else 0
+        var = 1 if result[i] == 1 else 0
         if tuple(combination1[i]) in gameCombination:
             gameCombination[tuple(combination1[i])][var] = gameCombination[tuple(combination1[i])][var] + 1
         else:
             gameCombination.setdefault(tuple(combination1[i]), [0, 0])
             gameCombination[tuple(combination1[i])][var] = 1
-    for i in range(len(combination2)):
-        var = 1 if result[i] == 1 else 0
+        var = 1 if var == 0 else 0
         if tuple(combination2[i]) in gameCombination:
-            gameCombination[tuple(combination1[i])][var] = gameCombination[tuple(combination1[i])][var] + 1
+            gameCombination[tuple(combination2[i])][var] = gameCombination[tuple(combination2[i])][var] + 1
         else:
-            gameCombination.setdefault(tuple(combination1[i]), [0, 0])
-            gameCombination[tuple(combination1[i])][var] = 1
+            gameCombination.setdefault(tuple(combination2[i]), [0, 0])
+            gameCombination[tuple(combination2[i])][var] = 1
 
     with open(write, 'w') as f:
-        f.writelines("1, 2, 3, 4, 5, Win, Defeat\n")
+        f.writelines("1, 2, 3, 4, 5, WinRate, Win, Defeat\n")
         for key, value in gameCombination.items():
-            f.writelines(f"{key[0]}, {key[1]}, {key[2]}, {key[3]}, {key[4]}, {value[0]}, {value[1]}\n")
+            f.writelines(f"{key[0]}, {key[1]}, {key[2]}, {key[3]}, {key[4]}, {round((100/(value[0]+value[1]))*value[0], 2)} , {value[0]}, {value[1]}\n")
 
     return
 
@@ -358,15 +419,19 @@ if __name__ == '__main__':
     csvSortedGameData = "sortedDataGameMode22.csv"
 
     csvDuoData = "duoData.csv"
+    csvDuoDataV2 = "duoDataDire.csv"
     csvTeamData = "teamData.csv"
 
     csvDuoWinRate = "winRateDuo.csv"
+    csvDuoWinRateV2 = "winRateDuoV2.csv"
     csvTeamWinRate = "winRateTeam.csv"
     csvHeroGameTime = "heroGameTime.csv"
     csvTeamWinRateDependingOnTeam = "teamWinRateDependingOnTeam.csv"
 
     # createDuoData(csvGameData, csvDuoData)
     # duoWinRate(csvDuoData, csvDuoWinRate)
+    createDuoDataV2(csvSortedGameData, csvDuoDataV2)
+    # duoWinRateV2(csvDuoDataV2, csvDuoWinRateV2)
     # findHighestWinRateDuo(csvDuoWinRate)
     # sortedCSV(csvGameData, csvSortedGameData)
     # winRateHero(csvSortedGameData)
@@ -374,5 +439,5 @@ if __name__ == '__main__':
     # teamWinRate(csvTeamData, csvTeamWinRate)
     # heroGameTime(csvSortedGameData, csvHeroGameTime)
     # findHighestWintRatedDependingOnTeam(csvSortedGameData, csvTeamWinRateDependingOnTeam)
-    heroThatTeamHaveTheMostToSayForWinRate(csvTeamWinRateDependingOnTeam)
+    # heroThatTeamHaveTheMostToSayForWinRate(csvTeamWinRateDependingOnTeam)
     print(time.time() - st)
