@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-8">
+        <div class="heroview">
+            {% for hero in heroes %}
+            <div class="hero-box">
+                <div class="wrapper">
+                    <div class="hero-image" data-heroid="{{hero['id']}}">
+                        <img src="{{ url_for('static', filename='img/avatar-sb/' + hero['id'] | string) + '.png' }}"
+                            width="90px" height="50px" alt="{{hero['name']}}">
+                    </div>
+                    <div class="hero-name text-center bg-dark text-white noselect">{{hero['name']}}
+                    </div>
+
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="col-4">
+        <textarea id="outputExplore" class="m-1"></textarea>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %} 
+<script src="{{url_for('static', filename='js/explore.js')}}"></script>
+{% endblock %}

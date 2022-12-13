@@ -5,6 +5,7 @@ from typing import List
 import numpy as np
 import operator
 import math
+import numba
 
 
 class Hero:
@@ -150,7 +151,7 @@ def get_heroes() -> list:
 
 
 def main():
-    # extract_data()
+    extract_data()
     """
     data = load_data()
     print(f'1. {get_most_played_hero(data)}')
@@ -164,10 +165,6 @@ def main():
     print(f'9. Unknown')
     print(get_heroes())
     """
-    x = np.ndarray(shape=(2, 3))
-    x = np.append(x, [[1, 2, 3]], axis=0)
-    x = np.append(x, [[1, 2, 3]], axis=0)
-    print(x)
 
 if __name__ == '__main__':
     main()
