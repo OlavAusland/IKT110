@@ -6,6 +6,7 @@ import numpy as np
 import operator
 import math
 import numba
+import csv
 
 
 class Hero:
@@ -97,9 +98,14 @@ def get_highest_win_rate_hero(data: dict):
             else:
                 heroes[player] = {'wins': 0, 'losses': 0}
     win_percentage = {}
+    print(heroes)
     for (key, value) in heroes.items():
         win_percentage[key] = float(value['wins'] / (value['wins'] + value['losses']))
     result = max(win_percentage, key=win_percentage.get, default=None)
+
+    with open("./data/win_rate.json", "w") as outfile:
+        json.dump(win_percentage, outfile)
+
     return {result: win_percentage[result]}
 
 
@@ -161,8 +167,51 @@ def data_cleanup(data: str = './data.json'):
         file.write(data)
 
 
+def get_pick_rate(data: dict):
+    result: dict = {}
+
+    for game in data:
+        for (team_key, team_value) in game['players'].items():
+            for player in team_value:
+                if player in result.keys():
+                    result[int(player)]['rounds'] += 1
+                else:
+                    result[int(player)] = {'rounds': 1}
+    for (key, value) in result.items():
+        result[key]['pick_rate'] = (value['rounds'] / len(data))
+
+    with open("./data/pick_rate.json", "w") as outfile:
+        json.dump(result, outfile)
+    return result
+
+
+def get_best_pair(file: str = './data/pair_win_rate.csv'):
+    result = {} # {'pair_id': 0, 'win_rate': 0}
+
+    with open(file, 'r') as file:
+        data = csv.reader(file, quoting=csv.QUOTE_MINIMAL)
+        next(data)
+
+        for row in data:
+            if int(row[0]) in result.keys():
+                if result[int(row[0])]['win_rate'] < float(row[2]):
+                    result[int(row[0])]['pair_id'] = int(row[1])
+                    result[int(row[0])]['win_rate'] = float(row[2])
+            else:
+                result[int(row[0])] = {'pair_id': int(row[1]), 'win_rate': float(row[2])}
+
+    with open('./data/best_duo.json', 'w') as file:
+        json.dump(result, file)
+
+    return result
+
+
 def main():
-    extract_data()
+    data: dict = json.loads(open('./data.json').read())
+    # get_pick_rate(data)
+    # get_highest_win_rate_hero(data)
+    get_best_pair()
+    # extract_dat()
     # data_cleanup()
     """
     data = load_data()
