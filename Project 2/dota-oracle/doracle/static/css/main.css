@@ -1,0 +1,102 @@
+.hero-name {
+    font-size: 60%;
+}
+
+.hero-box {
+    display: inline-block;
+    margin-bottom: 0.25rem;
+    vertical-align:top;
+}
+
+.hero-select {
+    display: none;
+    align-items: center;
+    z-index: 1;
+    color: white;
+}
+
+
+.hero-pool {
+    cursor: pointer;
+}
+
+.hero-select-left {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(5, 146, 5, 0.8);
+    height: 100%;
+    flex:1;
+    cursor: pointer;
+    color: white;    
+    font-size: 75%;
+}
+
+.hero-select-left:hover {
+    background-color: rgba(0, 124, 0, 0.8);
+}
+
+.hero-select-left:hover:active {
+    background-color: rgba(1, 95, 1, 0.8);
+}
+
+.hero-select-right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(146, 26, 5, 0.8);
+    height: 100%;
+    flex:1;
+    cursor: pointer;
+    color: white;  
+    font-size: 75%;  
+}
+
+.hero-select-right:hover {
+    background-color: rgba(124, 19, 0, 0.8);
+}
+
+.hero-select-right:hover:active {
+    background-color: rgba(104, 16, 0, 0.8);
+}
+
+a:hover, a:visited, a:link, a:active
+{
+    text-decoration: none;
+}
+
+.wrapper {
+    display: grid;
+} 
+
+.hero-select, .hero-image {
+    grid-area: 1 / 1;
+} 
+
+.hero-box:hover .hero-select{
+    display: flex;
+}
+
+
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtml-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Old versions of Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome, Edge, Opera and Firefox */
+}
+textarea {
+    width: 100%;
+    height: 100%;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         /* Opera/IE 8+ */
+    font-size: 10pt;
+}
+
+.hero-image{
+    cursor: pointer;
+}
+

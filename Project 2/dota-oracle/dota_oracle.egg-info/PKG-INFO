@@ -1,0 +1,31 @@
+Metadata-Version: 2.1
+Name: dota-oracle
+Version: 1.1
+Summary: UNKNOWN
+Home-page: https://github.com/baovien/dota-oracle
+Author: Bao Vien Ngo
+Author-email: bao.ngo@confirmit.com
+License: UNKNOWN
+Platform: UNKNOWN
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# Dota Oracle
+
+## Getting Started
+
+### Install
+
+* Go to project root `cd dota-oracle`
+* Make sure the conda/virtualenv environment you want to install to is active.
+* Run `pip install -e .`
+
+### Run
+
+* Start the application by running `python -m doracle.app`
+
+## License
+
+[MIT License](LICENSE)
+
+

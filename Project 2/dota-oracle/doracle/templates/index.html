@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<div class="row">
+    <div class="col">
+        <h3 class="font-weight-light">Radiant</h3>
+        {% for i in range(5) %}
+        <div class="p-0 d-inline">
+            <img id="radiant-{{i}}" src="{{ url_for('static', filename='img/placeholder.png')}}"
+                class="hero-pool hero-pool-radiant img-responsive" data-heroid="-1">
+        </div>
+        {% endfor %}
+    </div>
+    <div class="col">
+        <h3 class="font-weight-light">Dire</h3>
+        {% for i in range(5) %}
+        <div class="p-0 d-inline">
+            <img id="dire-{{i}}" src="{{ url_for('static', filename='img/placeholder.png')}}"
+                class="hero-pool hero-pool-dire img-responsive" data-heroid="-1" >
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<hr class="my-4">
+<div class="row">
+    <div class="col-8">
+        <div class="heroview">
+            {% for hero in heroes %}
+            <div class="hero-box">
+                <div class="wrapper">
+                    <div class="hero-select">
+                        <div class="hero-select-left noselect" data-heroid="{{hero['id']}}">
+                            Radiant
+                        </div>
+                        <div class="hero-select-right noselect" data-heroid="{{hero['id']}}">
+                            Dire
+                        </div>
+                    </div>
+
+                    <div class="hero-image noselect">
+                        <img src="{{ url_for('static', filename='img/avatar-sb/' + hero['id'] | string) + '.png' }}"
+                            width="90px" height="50px" alt="{{hero['name']}}">
+                    </div>
+                    <div class="hero-name text-center bg-dark text-white noselect">{{hero['name']}}
+                    </div>
+
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="row">
+            <!-- Fix this Dr. Dre -->
+            <button id="suggestBtn1" type="button" class="btn btn-primary m-1">Suggest Hero</button>
+            <button id="suggestBtn2" type="button" class="btn btn-secondary m-1">Predict Win Percentage</button>
+            <button id="suggestBtn3" type="button" class="btn btn-success m-1">Suggest 3</button>
+        </div>
+        <div class="row">
+            <textarea id="outputOracle" rows="30" class="m-1" ></textarea>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %} 
+<script src="{{url_for('static', filename='js/oracle.js')}}"></script>
+
+{% endblock %}
