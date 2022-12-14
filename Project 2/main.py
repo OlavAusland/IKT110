@@ -66,7 +66,7 @@ def get_most_played_hero(data: dict):
     :return: Most frequently played hero id.
     """
     heroes_frequency = {}
-
+    print('games: ', len(data))
     for game in data:
         for player in game['players']['dire']:
             if player in heroes_frequency.keys():
@@ -210,11 +210,10 @@ def main():
     data: dict = json.loads(open('./data.json').read())
     # get_pick_rate(data)
     # get_highest_win_rate_hero(data)
-    get_best_pair()
+    # get_best_pair()
     # extract_dat()
     # data_cleanup()
-    """
-    data = load_data()
+
     print(f'1. {get_most_played_hero(data)}')
     print(f'2. {get_highest_win_rate_hero(data)}')
     print(f'3. {get_team_win_rate(data)}')
@@ -225,7 +224,6 @@ def main():
     print(f'8. Unknown')
     print(f'9. Unknown')
     print(get_heroes())
-    """
 
 
 if __name__ == '__main__':

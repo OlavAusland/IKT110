@@ -8,7 +8,7 @@ import tqdm
 INPUT_SHAPE = (136 * 2,)
 OUTPUT_SHAPE = 2
 
-EPOCH_SIZE = 100
+EPOCH_SIZE = 10
 BATCH_SIZE = 10
 
 
@@ -20,8 +20,8 @@ def create_model() -> Sequential:
     model = Sequential(
         [
             layers.Input(shape=INPUT_SHAPE),
-            layers.Dense(128, activation='relu'),
-            layers.Dense(64, activation='relu'),
+            layers.Dense(272, activation='relu'),
+            layers.Dense(272, activation='relu'),
             layers.Dense(OUTPUT_SHAPE, activation='softmax')
         ]
     )
@@ -69,7 +69,7 @@ def train():
     print(model.evaluate(x_test, y_test, batch_size=BATCH_SIZE))
 
 
-def predict(model_path: str = './models/model.h5', dire=[18, 39, 29, 101, 14], radiant=[84, 56, 70, 40, 104]):
+def predict(model_path: str = './models/default.h5', dire=[18, 39, 29, 101, 14], radiant=[84, 56, 70, 40, 104]):
     model: Sequential = load_model(model_path)
 
     data = champs_to_input(dire, radiant)
@@ -79,8 +79,20 @@ def predict(model_path: str = './models/model.h5', dire=[18, 39, 29, 101, 14], r
     print(prediction)
 
 
+def test_model(model_path: str = './models/default.h5'):
+    x_train, y_train, x_test, y_test = load_data()
+
+    model: Sequential = load_model(model_path)
+
+    print(model.evaluate(x_test, y_test))
+
+
 def main():
-    #train()
+    #test_model()
+    predict(dire=[100, 67, 28, 63, 75], radiant=[14, 40, 97, 10, 18])
+
+    """
+    train()
 
     non_champion_id = [24, 115, 116, 117, 118, 122, 123, 124, 125, 127]
     enemies = [36, 27, 41, 31, 98]
@@ -91,7 +103,7 @@ def main():
     print(champion_pool)
 
     predict(dire=np.random.choice(champion_pool, 5), radiant=enemies)
-
+    """
 
 if __name__ == '__main__':
     main()

@@ -54,7 +54,14 @@ def explore():
 @app.route("/suggest1", methods=["POST"])
 def suggest1():
     r = request.get_json()
-    r["todo"] = "Please rename the button from Suggest1 and implement some functionality here.",
+
+    if len(r['dire']):
+        prediction = predict_hero(heroes=r['dire'], team=1)
+        suggestion = f"👑{get_hero_by_id(prediction[0])['name']} ➡ {round(prediction[1], 2)}%"
+    else:
+        suggestion = 'You need at least one hero on your team!'
+
+    r['suggestion'] = suggestion
 
     return jsonify(r)
 
@@ -79,7 +86,14 @@ def suggest2():
 @app.route("/suggest3", methods=["POST"])
 def suggest3():
     r = request.get_json()
-    r["todo"] = "Please rename the button from Suggest3 and implement some functionality here.",
+    print(r['radiant'])
+
+    if len(r['radiant']) > 0:
+        prediction = predict_hero(heroes=r['radiant'], team=0)
+        suggestion = f"👑{get_hero_by_id(prediction[0])['name']} ➡ {round(prediction[1], 2)}%"
+    else:
+        suggestion = 'You need at least one hero on your team!'
+    r['suggestion'] = suggestion
 
     return jsonify(r)
 
