@@ -109,6 +109,8 @@ def get_hero_stats(heroid):
         "best_paired_with": best_paired_with_name
     }
 
+    print(hero)
+
     return jsonify(hero_stats)
 
 
@@ -121,7 +123,7 @@ def get_hero_by_id(hero_id: int) -> dict:
     for hero in heroes:
         if hero['id'] == hero_id:
             return hero
-
+    return heroes[1]
 
 @lru_cache(maxsize=1)
 def get_heroes():
